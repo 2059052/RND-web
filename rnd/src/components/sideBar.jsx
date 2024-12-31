@@ -1,6 +1,4 @@
 import * as React from "react";
-import App from "../App";
-import { useLocation } from "react-router-dom";
 const menuItems = [
   {
     label: "Dashboard",
@@ -25,6 +23,12 @@ const menuItems = [
     icon: "https://cdn.builder.io/api/v1/image/assets/TEMP/f3d65956cf436bf12682deec2cf19a45501ab34dec801c73fa809ab79c28f8fa?placeholderIfAbsent=true&apiKey=ca516fbee743436d9ea048943e88f801",
     active: false,
     path: "/support",
+  },
+  {
+    label: "Login",
+    icon: "",
+    active: false,
+    path: "/login",
   },
 ];
 

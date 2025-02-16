@@ -1,5 +1,12 @@
-import * as React from "react";
-import Movies from "./Movie";
+import React from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
 export default function StatisticsCard({
   title,
@@ -7,8 +14,8 @@ export default function StatisticsCard({
   unit,
   change,
   changeType,
-  graphImage,
-  timeLabels,
+  timeLabels = [],
+  chartData = [], // New prop for dynamic chart data
 }) {
   return (
     <div className="flex flex-col py-5 mx-auto w-full rounded-lg bg-orange-100 shadow-[0px_1px_1px_rgba(0,0,0,0.25)] max-md:mt-5 max-md:max-w-full">
@@ -22,40 +29,38 @@ export default function StatisticsCard({
             <div className="self-stretch my-auto">Current {currentValue}</div>
             <div className="self-stretch my-auto">{unit}</div>
           </div>
-          <div
-            className={`flex gap-1 justify-between items-center text-xs leading-5 text-right ${
-              changeType === "increase" ? "text-yellow-800" : "text-lime-400"
-            } whitespace-nowrap`}
-          >
-            <img
-              loading="lazy"
-              src={`http://b.io/ext_${
-                changeType === "increase" ? "16" : "18"
-              }-`}
-              alt=""
-              className="object-contain shrink-0 self-stretch my-auto w-4 aspect-square"
-            />
-            {/* <div className="flex justify-center items-start self-stretch my-auto">
-              <div>{change}</div>
-              {unit && <div>{unit}</div>}
-            </div> */}
-          </div>
         </div>
       </div>
       <div className="flex justify-center shrink-0 mt-3.5 ml-3 max-w-full h-px border border-solid bg-orange-100 border-black w-[466px] max-md:mr-2" />
-      <Movies />
-      {/* <img
-        loading="lazy"
-        src={graphImage}
-        alt={`${title} statistics graph`}
-        className="object-contain mt-8 w-full aspect-[3.57] max-md:max-w-full"
-      /> */}
+
+      {/* Chart Section */}
+      <div className="w-full h-40 mt-4">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={chartData}>
+            <XAxis dataKey="time" />
+            <YAxis />
+            <Tooltip />
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#ff7300"
+              strokeWidth={2}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+
+      {/* Time Labels */}
       <div className="flex gap-1.5 justify-between items-center mt-7 mr-2.5 text-xs tracking-wide text-center text-gray-500 uppercase whitespace-nowrap min-h-[17px]">
-        {timeLabels.map((label, index) => (
-          <div key={index} className="self-stretch my-auto w-[30px]">
-            {label}
-          </div>
-        ))}
+        {timeLabels.length > 0 ? (
+          timeLabels.map((label, index) => (
+            <div key={index} className="self-stretch my-auto w-[30px]">
+              {label}
+            </div>
+          ))
+        ) : (
+          <div>No Data Available</div>
+        )}
       </div>
     </div>
   );
